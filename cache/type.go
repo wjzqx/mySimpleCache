@@ -12,7 +12,7 @@ type CacheInfo struct {
 	Persistence string
 }
 
-// 声明常量
+// 声明异常常量
 var (
 	/** ErrMapKeyNotFind 查询key值不存 */
 	ErrMapKeyNotFind = errors.New("key查询不存在")
