@@ -20,6 +20,12 @@ var (
 	ErrMapKeyExistence = errors.New("key已存在")
 	/** ErrArrayIndexOutOfRange index超出数据的实际范围 */
 	ErrArrayIndexOutOfRange = errors.New("index超出数据的实际范围")
+	/** ErrRowIsNull rowCache是nil*/
+	ErrRowIsNull = errors.New("rowCache是nil，请先实例化rowCache")
+	/** ErrFieldIsNull fieldCache是nil*/
+	ErrFieldIsNull = errors.New("fieldCache是nil，请先实例化fieldCache")
+	/** ErrTableIsNull tableCache是nil*/
+	ErrTableIsNull = errors.New("tableCache是nil，请先实例化tableCache")
 )
 
 func (c CacheInfo) CreateCache() {
