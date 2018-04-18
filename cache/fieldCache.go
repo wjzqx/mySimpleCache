@@ -8,11 +8,11 @@ package cache
 import (
 	"encoding/json"
 	//	"errors"
-	"fmt"
+	//"fmt"
 )
 
 // 设置字段缓存类型
-type FieldCache map[string]string
+type FieldCache map[string]interface{}
 
 /** 初始化缓存对象*/
 //func init() {
@@ -30,7 +30,7 @@ type FieldCache map[string]string
  *
  * @return error
  */
-func AddSouce(fc FieldCache, key string, value string) (err error) {
+func AddSouce(fc FieldCache, key string, value interface{}) (err error) {
 
 	// 查找键值是否存在
 	if _, ok := fc[key]; ok {
@@ -58,11 +58,11 @@ func GetSouceByKey(fc FieldCache, key string) (s string, err error) {
 		if err != nil {
 			return key, err
 		}
-		fmt.Printf("value: %v/n", string(b))
+
 		return string(b), err
 
 	} else {
-		return key, ErrMapKeyExistence
+		return key, ErrMapKeyNotFind
 	}
 
 }
@@ -92,7 +92,7 @@ func DelSouceByKey(fc FieldCache, key string) (err error) {
  *
  * @return string, error
  */
-func UpdataSouceByKey(fc FieldCache, key string, value string) (err error) {
+func UpdataSouceByKey(fc FieldCache, key string, value interface{}) (err error) {
 
 	// 查找键值是否存在
 	if _, ok := fc[key]; ok {

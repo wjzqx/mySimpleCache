@@ -1,4 +1,10 @@
-// tableCache
+/**
+ * tableCache
+ * 表数据集合对应着数据库中的一张表数据记录
+ * 格式如下： [myTable:[map[a:aaa b:aaa] map[c:aaa] map[d:aaa e:aaa f:aaa] map[d:aaa] map[d:aaa] map[d:aaa]]]
+ *          或{"myTable":[{"a":"aaa","b":"aaa"},{"c":"aaa"},{"d":"aaa","e":"aaa","f":"aaa"},{"d":"aaa"},{"d":"aaa"},{"d":"aaa"}]}
+ * 该方法集合主要处理表数据的操作：针对表的增，删，改，查的操作
+ */
 package cache
 
 //"errors"
@@ -7,13 +13,14 @@ package cache
 
 type tableCache map[string]RowCache
 
-func addTable(tc tableCache, rc RowCache) (_tc tableCache, err error) {
+func addTable(tc tableCache, key string, rc RowCache) (_tc tableCache, err error) {
 
 	if rc == nil {
 		return _tc, ErrRowIsNull
 	}
 
-	return _tc, err
+	tc[key] = rc
+	return tc, err
 
 }
 
@@ -45,7 +52,6 @@ func updateTableBykey(tc tableCache, key string, rc RowCache) (_tc tableCache, e
 		err = ErrMapKeyNotFind
 	}
 	return _tc, err
-
 }
 
 func delTableByKey(tc tableCache, key string) (_tc tableCache, err error) {

@@ -9,12 +9,32 @@ import (
 )
 
 func main() {
+	cache.CreateTable("testTable")
+	//test1()
 
+	var a = `{"a":"aaa","b":"aaa"},{"a":12}`
+	var b = `[{"c":"aaa"}`
+
+	tc, _ := cache.AddParam("testTable", a)
+	fmt.Printf("GetSouceAll: %v\n", tc)
+
+	tc, _ = cache.AddParam("testTable", b)
+	fmt.Printf("GetSouceAll: %v\n", tc)
+
+	str, _ := cache.QueryParam("testTable", "a", 12)
+	fmt.Printf("GetSouceAll: %v\n", str)
+
+	//fmt.Printf("GetSouceAll: %v\n", cache.FormatStrHeadOrTail(a, "[", "]"))
+	//fmt.Printf("GetSouceAll: %v\n", cache.FormatStrHeadOrTail(b, "[", "]"))
+
+}
+
+func test1() {
 	myCache := make(cache.FieldCache)
 	cache.AddSouce(myCache, "A", "a")
-	cache.AddSouce(myCache, "B", "b")
-	cache.AddSouce(myCache, "C", "c")
-	cache.AddSouce(myCache, "D", "d")
+	cache.AddSouce(myCache, "B", 1)
+	cache.AddSouce(myCache, "C", 23)
+	cache.AddSouce(myCache, "D", 12.1)
 	cache.AddSouce(myCache, "E", "e")
 	cache.AddSouce(myCache, "F", "f")
 
@@ -103,5 +123,4 @@ func main() {
 	jsonStr1 := string(d1)
 
 	fmt.Printf("jsonStr: %v\n", jsonStr1)
-
 }
