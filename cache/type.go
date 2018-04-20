@@ -33,3 +33,12 @@ func (c CacheInfo) CreateCache() {
 	//myCache = make(map[string]string)
 	fmt.Println("this is cacheInfo: %v\n", 123)
 }
+
+//type CacheAddParam interface {
+//	createTable
+//	addParam(talbleName string, val string) (tc tableCache, err error)
+//}
+
+//type CacheQueryParam interface {
+//	queryParam(talbleName string, key string, val interface{}) (_val string, _err error)
+//}

@@ -12,17 +12,37 @@ func main() {
 	cache.CreateTable("testTable")
 	//test1()
 
-	var a = `{"a":"aaa","b":"aaa"},{"a":12}`
-	var b = `[{"c":"aaa"}`
+	//var a = `{"a":"aaa","b":"aaa"},{"a":12}`
+	//var b = `[{"c":"aaa"}`
 
-	tc, _ := cache.AddParam("testTable", a)
-	fmt.Printf("GetSouceAll: %v\n", tc)
+	//tc, _ := cache.AddParam("testTable", a)
+	//fmt.Printf("GetSouceAll: %v\n", tc)
 
-	tc, _ = cache.AddParam("testTable", b)
-	fmt.Printf("GetSouceAll: %v\n", tc)
+	//tc, _ = cache.AddParam("testTable", b)
+	//fmt.Printf("GetSouceAll: %v\n", tc)
 
-	str, _ := cache.QueryParam("testTable", "a", 12)
-	fmt.Printf("GetSouceAll: %v\n", str)
+	//str, _ := cache.QueryParamByCondition("testTable", "a", "aaa")
+	//fmt.Printf("GetSouceAll: %v\n", str)
+
+	cache.Run()
+	//running := true
+	//	fmt.Scanln(&opName, &queryParam, &targetFlag, &tableName, &termFlag, &termParam)
+	//	fmt.Printf("Hi %s %s %s %s %s %s!\n", opName, queryParam, targetFlag, tableName, termFlag, termParam)
+	//	fmt.Printf("opName %s\n", opName)
+	//	fmt.Printf("queryParam %v\n", queryParam)
+	//	fmt.Printf("targetFlag %s\n", targetFlag)
+	//	fmt.Printf("tableName %s\n", tableName)
+	//	fmt.Printf("termFlag %s\n", termFlag)
+	//	fmt.Printf("termParam %s\n", termParam)
+	//	log.Println("command", opName)
+	//	for running {
+	//		fmt.Printf("Hi %s %s %s %s %s %s!\n", opName, queryParam, targetFlag, tableName, termFlag, termParam)
+	//		if opName == "stop" {
+	//			running = false
+	//		}
+
+	//		log.Println("command", opName)
+	//	}
 
 	//fmt.Printf("GetSouceAll: %v\n", cache.FormatStrHeadOrTail(a, "[", "]"))
 	//fmt.Printf("GetSouceAll: %v\n", cache.FormatStrHeadOrTail(b, "[", "]"))

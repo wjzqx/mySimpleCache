@@ -2,7 +2,11 @@
 package cache
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
+	"strings"
 )
 
 var table tableCache
@@ -12,7 +16,7 @@ var table tableCache
  *
  */
 func CreateTable(talbleName string) (tc tableCache, err error) {
-	fmt.Println("CreateTable")
+
 	if table == nil {
 		table = make(tableCache)
 	}
@@ -34,47 +38,46 @@ func CreateTable(talbleName string) (tc tableCache, err error) {
  *  return tableCache
  */
 func AddParam(talbleName string, val string) (tc tableCache, err error) {
-
+	log.Println("AddParam start...")
+	// 先查询该表下是否存在数据
 	oldRc, _ := getTableByKey(table, talbleName)
-
-	newRc, _err := JsonToRow(val)
-
+	log.Println("oldRc-->", oldRc)
+	newRc, _err := jsonToRow(val)
+	log.Println("newRc:-->", newRc)
+	// 如果该表下存在数据，则把新增数拼接到数据后面
 	if oldRc != nil && len(oldRc) > 0 {
 
-		fmt.Printf("oldRc: %v\n", oldRc)
 		oldRc = append(oldRc, newRc...)
 		table, _ = addTable(table, talbleName, oldRc)
 	} else {
 		table, _ = addTable(table, talbleName, newRc)
 	}
-
+	log.Println("add after table data:-->", table)
+	log.Println("AddParam end...")
 	return table, _err
 }
 
 /**
-* 查询一条数据
+* 根据key和val查询数据集合
 * talbleName 表名
-* key 查询条件
-  val 查询条件字段
+* key 查询条件字段名称
+* val 查询条件字段值
 * return
-*/
-func QueryParam(talbleName string, key string, val interface{}) (_val string, _err error) {
+ */
+func QueryParamByCondition(talbleName string, key string, val interface{}) (_val string, _err error) {
 	rc, err1 := getTableByKey(table, talbleName)
 
 	var rcTemp = make(RowCache, 0, 100)
 
 	for _, v := range rc {
 		vTemp, err2 := GetSouceByKey(v, key)
-		fmt.Printf("vTemp: %v\n", vTemp)
-		fmt.Printf("val: %v\n", val)
-		fmt.Printf("err2: %v\n", err2)
-
-		valTemp, _ := ToJsonStr(val)
-		fmt.Printf("vTemp vs val: %v\n", (vTemp == valTemp))
-		if err2 == nil && vTemp == valTemp {
-
+		//valTemp, _ := ToJsonStr(val)
+		log.Println("valTemp-->", val)
+		log.Println("vTemp-->", vTemp)
+		log.Println("err2-->", err2)
+		log.Println("vTemp==valTemp", (vTemp == val))
+		if err2 == nil && vTemp == val {
 			rcTemp = AddRow(rcTemp, v)
-
 		}
 	}
 
@@ -84,4 +87,47 @@ func QueryParam(talbleName string, key string, val interface{}) (_val string, _e
 	}
 
 	return "", err1
+}
+
+func Run() {
+	consoleInput()
+}
+
+/**
+ * 运行控制台
+ * 命令输入的方式使用缓存数据库
+ */
+func consoleInput() {
+	running := true
+	reader := bufio.NewReader(os.Stdin)
+
+	for running {
+		data, _, _ := reader.ReadLine()
+		command := string(data)
+		if command == "stop" {
+			running = false
+			return
+		}
+
+		s := strings.Split(command, " ")
+		switch s[0] {
+		case "caretTable":
+			CreateTable(s[1])
+			log.Println("CreateTable success", command)
+		case "insertRow":
+			tc, _ := AddParam(s[1], s[2])
+			log.Println("insertRow success", tc)
+		case "query":
+			str, err := QueryParamByCondition(s[1], s[2], s[3])
+			if err != nil {
+				log.Println("query field", err)
+			} else {
+				log.Println("query success", str)
+			}
+
+		}
+
+		log.Println("command", s[0])
+	}
+
 }

@@ -33,7 +33,7 @@ func validParam(args ...interface{}) (err error) {
 /**
  * 数据转换 json字符串 -> RowCache类型
  */
-func JsonToRow(val string) (_rc RowCache, err error) {
+func jsonToRow(val string) (_rc RowCache, err error) {
 	var rc RowCache
 	val = FormatStrHeadOrTail(val, "[", "]")
 	var _val = []byte(val)
