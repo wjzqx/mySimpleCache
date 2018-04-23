@@ -9,22 +9,44 @@ import (
 )
 
 func main() {
+
+	//	m2 := make(map[int]int)
+	//	m2[3] = 10
+	//	m2[2] = 11
+	//	m2[9] = 12
+	//	m2[1] = 13
+	//	m2[4] = 14
+	//	m2[8] = 15
+	//	m2[5] = 16
+	//	m2[7] = 17
+	//	m2[6] = 18
+
+	//	sortM := cache.SortMapKey(m2)
+
+	//	for _, v := range sortM {
+	//		fmt.Printf("k=%v, v=%v\n", v.Key, v.Value)
+
+	//	}
+	//	fmt.Printf("sortM: %v\n", sortM)
+
 	cache.CreateTable("testTable")
 	//test1()
 
-	//var a = `{"a":"aaa","b":"aaa"},{"a":12}`
-	//var b = `[{"c":"aaa"}`
+	var a = `{"a":15,"b":"aaa"},{"a":12}`
+	var b = `[{"c":"aaa"}`
 
-	//tc, _ := cache.AddParam("testTable", a)
-	//fmt.Printf("GetSouceAll: %v\n", tc)
+	tc, _ := cache.AddParam("testTable", a)
+	fmt.Printf("AddParam: %v\n", tc)
 
-	//tc, _ = cache.AddParam("testTable", b)
-	//fmt.Printf("GetSouceAll: %v\n", tc)
+	tc, _ = cache.AddParam("testTable", b)
+	fmt.Printf("AddParam: %v\n", tc)
 
-	//str, _ := cache.QueryParamByCondition("testTable", "a", "aaa")
-	//fmt.Printf("GetSouceAll: %v\n", str)
+	ascstr, _ := cache.QueryParamByTableSort("testTable", "a", "asc")
+	fmt.Printf("QueryParamByTableSort: %v\n", ascstr)
+	descstr, _ := cache.QueryParamByTableSort("testTable", "a", "desc")
+	fmt.Printf("QueryParamByTableSort: %v\n", descstr)
 
-	cache.Run()
+	//cache.Run()
 	//running := true
 	//	fmt.Scanln(&opName, &queryParam, &targetFlag, &tableName, &termFlag, &termParam)
 	//	fmt.Printf("Hi %s %s %s %s %s %s!\n", opName, queryParam, targetFlag, tableName, termFlag, termParam)

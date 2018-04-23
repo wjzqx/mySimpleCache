@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -87,6 +88,61 @@ func QueryParamByCondition(talbleName string, key string, val interface{}) (_val
 	}
 
 	return "", err1
+}
+
+/**
+ * 根据表名查询数据
+ * @param tableName 表名
+ */
+func QueryParamByTable(tableName string) (_val RowCache, _err error) {
+
+	val, err := getTableByKey(table, tableName)
+
+	return val, err
+}
+
+/**
+ * 根据字段名称查询数据
+ * @param fieldName 字段名称
+ * @param tableName 表名
+ * @param sortName 排序类型: asc 正序，desc 倒序
+ *
+ */
+func QueryParamByTableSort(tableName string, fieldName string, sortName string) (_val RowCache, _err error) {
+
+	val, err := getTableByKey(table, tableName)
+	sortMap := make(map[int]int)
+	for i, v := range val {
+		fmt.Printf("v ： %v\n", v)
+		fmt.Printf("i ： %v\n", i)
+		str, err := GetSouceByKey(v, fieldName)
+		if err == nil {
+			fmt.Printf("fieldName ： %v\n", fieldName)
+			fmt.Printf("str ： %v\n", str)
+			keyInt, _ := strconv.Atoi(str)
+			sortMap[keyInt] = i
+		}
+
+	}
+	fmt.Printf("sortMap ： %v\n", sortMap)
+
+	var sortVal = make(RowCache, 0, 100)
+
+	switch sortName {
+	case "asc":
+		var sortSlicp = SortAscMapKey(sortMap)
+		for _, key := range sortSlicp {
+			sortVal = append(sortVal, val[key.Value])
+		}
+	case "desc":
+		var sortSlicp = SortDescMapKey(sortMap)
+		for _, key := range sortSlicp {
+			sortVal = append(sortVal, val[key.Value])
+		}
+
+	}
+
+	return sortVal, err
 }
 
 func Run() {
