@@ -28,7 +28,7 @@ func (s personSliceDesc) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
 func (s personSliceDesc) Less(i, j int) bool { return s[i].Key > s[j].Key }
 
 /**
- * 根据MAP的可以进行排序
+ * 根据MAP的key进行排序（正序）
  */
 func SortAscMapKey(mapTemp map[int]int) (_p personSlice) {
 
@@ -45,6 +45,9 @@ func SortAscMapKey(mapTemp map[int]int) (_p personSlice) {
 	return pSlice
 }
 
+/**
+ * 根据MAP的key进行排序（倒序）
+ */
 func SortDescMapKey(mapTemp map[int]int) (_p personSliceDesc) {
 
 	var pSlice = make(personSliceDesc, 0, 100)
