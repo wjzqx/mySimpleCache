@@ -111,21 +111,25 @@ func QueryParamByTable(tableName string) (_val RowCache, _err error) {
 func QueryParamByTableSort(tableName string, fieldName string, sortName string) (_val RowCache, _err error) {
 
 	val, err := getTableByKey(table, tableName)
+	// 用于排序的容器:key：排序的字段值，value：该数据的行号索引
 	sortMap := make(map[int]int)
+
 	for i, v := range val {
-		fmt.Printf("v ： %v\n", v)
-		fmt.Printf("i ： %v\n", i)
+		//fmt.Printf("v ： %v\n", v)
+		//fmt.Printf("i ： %v\n", i)
+
+		// 将fieldName不存在的数据过滤掉
 		str, err := GetSouceByKey(v, fieldName)
 		if err == nil {
-			fmt.Printf("fieldName ： %v\n", fieldName)
-			fmt.Printf("str ： %v\n", str)
+			//fmt.Printf("fieldName ： %v\n", fieldName)
+			//fmt.Printf("str ： %v\n", str)
 			keyInt, _ := strconv.Atoi(str)
 			sortMap[keyInt] = i
 		}
 
 	}
-	fmt.Printf("sortMap ： %v\n", sortMap)
-
+	//fmt.Printf("sortMap ： %v\n", sortMap)
+	// 设置排序后的数据容器
 	var sortVal = make(RowCache, 0, 100)
 
 	switch sortName {
