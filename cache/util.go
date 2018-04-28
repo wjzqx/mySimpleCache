@@ -86,7 +86,9 @@ type fileOpInters interface {
 	/** 检查文件是否存在*/
 	checkFileIsExist() bool
 	/** 创建文件*/
-	createFile(fileObject *os.File) bool
+	createFile() (fileObject *os.File, _fileErr error)
+	// 打开文件
+	openFile() (fileObject *os.File, _fileErr error)
 	/** 创建文件夹*/
 	//createFolder(fileObject *os.File) bool
 	/** 保存文件内容*/
@@ -94,22 +96,19 @@ type fileOpInters interface {
 	/** 删除文件*/
 	//delFile(fileObject *os.File) bool
 
-	// 打开文件
-	openFile() (fileObject *os.File, _fileErr error)
 }
 
 func SaveFileOp(f fileOpInters) {
 	var fileObject *os.File
-	var b = true
-	//var fileErr error
-
+	var fileErr error
+	//
 	if f.checkFileIsExist() {
-		fileObject, _ = f.openFile()
+		fileObject, fileErr = f.openFile()
 	} else {
 		// 文件不存在，则创建文件
-		b = f.createFile(fileObject)
+		fileObject, fileErr = f.createFile()
 	}
-	if b {
+	if fileErr == nil {
 		f.saveFile(fileObject)
 	}
 
@@ -142,20 +141,19 @@ func (mf MyFileObj) openFile() (fileObject *os.File, _fileErr error) {
 	return fileObject, fileErr
 }
 
-func (mf MyFileObj) createFile(fileObject *os.File) bool {
-	var fileErr error
+func (mf MyFileObj) createFile() (fileObject *os.File, _fileErr error) {
 
 	log.Println("创建文件: ", mf.FileName)
 
-	fileObject, fileErr = os.Create(mf.FileName)
+	fileObject, fileErr := os.Create(mf.FileName)
 
 	if fileErr != nil {
 		log.Println("文件创建失败: ", fileErr)
-		return false
+		return fileObject, fileErr
 	}
 
 	log.Println("创建文件成功！")
-	return true
+	return fileObject, fileErr
 }
 
 func (mf MyFileObj) saveFile(fileObject *os.File) bool {
