@@ -3,38 +3,40 @@ package cache
 
 import (
 	"fmt"
+	//	"reflect"
 	"sort"
+	//"unsafe"
 )
 
-type personInt struct {
+type PersonInt struct {
 	Value int
 	Key   int
 }
 
-type personStr struct {
+type PersonStr struct {
 	value int
 	key   string
 }
 
-type personSlice []personInt
-type personSliceDesc []personInt
+type PersonSlice []PersonInt
+type PersonSliceDesc []PersonInt
 
-func (s personSlice) Len() int           { return len(s) }
-func (s personSlice) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
-func (s personSlice) Less(i, j int) bool { return s[i].Key < s[j].Key }
+func (s PersonSlice) Len() int           { return len(s) }
+func (s PersonSlice) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s PersonSlice) Less(i, j int) bool { return s[i].Key < s[j].Key }
 
-func (s personSliceDesc) Len() int           { return len(s) }
-func (s personSliceDesc) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
-func (s personSliceDesc) Less(i, j int) bool { return s[i].Key > s[j].Key }
+func (s PersonSliceDesc) Len() int           { return len(s) }
+func (s PersonSliceDesc) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s PersonSliceDesc) Less(i, j int) bool { return s[i].Key > s[j].Key }
 
 /**
  * 根据MAP的key进行排序（正序）
  */
-func SortAscMapKey(mapTemp map[int]int) (_p personSlice) {
+func SortAscMapKey(mapTemp map[int]int) (_p PersonSlice) {
 
-	var pSlice = make(personSlice, 0, 100)
+	var pSlice = make(PersonSlice, 0, 100)
 	for k, v := range mapTemp {
-		pint := personInt{Value: v, Key: k}
+		pint := PersonInt{Value: v, Key: k}
 		pSlice = append(pSlice, pint)
 		fmt.Printf("k=%v, v=%v\n", k, mapTemp[k])
 	}
@@ -48,11 +50,11 @@ func SortAscMapKey(mapTemp map[int]int) (_p personSlice) {
 /**
  * 根据MAP的key进行排序（倒序）
  */
-func SortDescMapKey(mapTemp map[int]int) (_p personSliceDesc) {
+func SortDescMapKey(mapTemp map[int]int) (_p PersonSliceDesc) {
 
-	var pSlice = make(personSliceDesc, 0, 100)
+	var pSlice = make(PersonSliceDesc, 0, 100)
 	for k, v := range mapTemp {
-		pint := personInt{Value: v, Key: k}
+		pint := PersonInt{Value: v, Key: k}
 		pSlice = append(pSlice, pint)
 		fmt.Printf("k=%v, v=%v\n", k, mapTemp[k])
 	}

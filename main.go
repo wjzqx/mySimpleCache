@@ -4,13 +4,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	//	"os"
 
 	"github.com/mySimpleCache/cache"
 )
 
 func main() {
 
-	//	m2 := make(map[int]int)
+	//	m2 := make(map[int]int)s
 	//	m2[3] = 10
 	//	m2[2] = 11
 	//	m2[9] = 12
@@ -45,7 +46,11 @@ func main() {
 	fmt.Printf("QueryParamByTableSort: %v\n", ascstr)
 	descstr, _ := cache.QueryParamByTableSort("testTable", "a", "desc")
 	fmt.Printf("QueryParamByTableSort: %v\n", descstr)
+	jsonStr, _ := json.Marshal(descstr)
 
+	testF := cache.MyFileObj{FileName: "./output1.txt", FileContent: jsonStr}
+	fmt.Printf("MyFileObj: %v\n", testF)
+	cache.SaveFileOp(testF)
 	//cache.Run()
 	//running := true
 	//	fmt.Scanln(&opName, &queryParam, &targetFlag, &tableName, &termFlag, &termParam)
