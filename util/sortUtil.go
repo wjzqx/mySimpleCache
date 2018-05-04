@@ -1,5 +1,5 @@
-// sortUtil
-package cache
+// sortUtils
+package util
 
 import (
 	"fmt"

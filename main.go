@@ -7,6 +7,7 @@ import (
 	//	"os"
 
 	"github.com/mySimpleCache/cache"
+	"github.com/mySimpleCache/util"
 )
 
 func main() {
@@ -48,9 +49,12 @@ func main() {
 	fmt.Printf("QueryParamByTableSort: %v\n", descstr)
 	jsonStr, _ := json.Marshal(descstr)
 
-	testF := cache.MyFileObj{FileName: "./output1.txt", FileContent: jsonStr}
+	testF := util.MyFileObj{FileName: "./output1.txt", FileContent: jsonStr}
 	fmt.Printf("MyFileObj: %v\n", testF)
-	cache.SaveFileOp(testF)
+	//cache.SaveFileOp(testF)
+	var mun = cache.RandInt64()
+	fmt.Printf("mun: %v\n", mun)
+
 	//cache.Run()
 	//running := true
 	//	fmt.Scanln(&opName, &queryParam, &targetFlag, &tableName, &termFlag, &termParam)

@@ -8,6 +8,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/mySimpleCache/util"
 )
 
 var table tableCache
@@ -43,7 +45,8 @@ func AddParam(talbleName string, val string) (tc tableCache, err error) {
 	// 先查询该表下是否存在数据
 	oldRc, _ := getTableByKey(table, talbleName)
 	log.Println("oldRc-->", oldRc)
-	newRc, _err := jsonToRow(val)
+	var newRc RowCache
+	_err := util.JsonToRow(val, &newRc)
 	log.Println("newRc:-->", newRc)
 	// 如果该表下存在数据，则把新增数拼接到数据后面
 	if oldRc != nil && len(oldRc) > 0 {
@@ -83,7 +86,7 @@ func QueryParamByCondition(talbleName string, key string, val interface{}) (_val
 	}
 
 	if len(rcTemp) > 0 {
-		jsonStr, err3 := ToJsonStr(rcTemp)
+		jsonStr, err3 := util.ToJsonStr(rcTemp)
 		return jsonStr, err3
 	}
 
@@ -134,12 +137,12 @@ func QueryParamByTableSort(tableName string, fieldName string, sortName string) 
 
 	switch sortName {
 	case "asc":
-		var sortSlicp = SortAscMapKey(sortMap)
+		var sortSlicp = util.SortAscMapKey(sortMap)
 		for _, key := range sortSlicp {
 			sortVal = append(sortVal, val[key.Value])
 		}
 	case "desc":
-		var sortSlicp = SortDescMapKey(sortMap)
+		var sortSlicp = util.SortDescMapKey(sortMap)
 		for _, key := range sortSlicp {
 			sortVal = append(sortVal, val[key.Value])
 		}
@@ -190,4 +193,27 @@ func consoleInput() {
 		log.Println("command", s[0])
 	}
 
+}
+
+/**
+ * 校验对象是否为空
+ * @param args... 需要校验的对象，可以为多个。
+ * @return err 校验的错误信息，没有错误为nil
+ */
+func validParam(args ...interface{}) (err error) {
+	fmt.Println("validParam")
+	for _, param := range args {
+		switch vtype := param.(type) {
+		case FieldCache:
+			if len(vtype) == 0 {
+				return ErrFieldIsNull
+			}
+		case RowCache:
+			if len(vtype) == 0 {
+				return ErrRowIsNull
+			}
+		}
+	}
+
+	return err
 }
