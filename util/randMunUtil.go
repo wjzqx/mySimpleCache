@@ -1,5 +1,5 @@
 // randMunUtil
-package cache
+package util
 
 import (
 	"math/rand"

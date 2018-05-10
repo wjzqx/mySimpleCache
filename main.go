@@ -4,6 +4,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 	//	"os"
 
 	"github.com/mySimpleCache/cache"
@@ -51,9 +52,31 @@ func main() {
 
 	testF := util.MyFileObj{FileName: "./output1.txt", FileContent: jsonStr}
 	fmt.Printf("MyFileObj: %v\n", testF)
-	//cache.SaveFileOp(testF)
-	var mun = cache.RandInt64()
+	util.SaveFileOp(testF)
+	var mun = util.RandInt64()
 	fmt.Printf("mun: %v\n", mun)
+	var timestamp = util.GetTimestamp("")
+	fmt.Printf("time: %v\n", timestamp)
+
+	var map1 = make(map[string]interface{})
+	map1["a1"] = "a1"
+	map1["b1"] = 123
+	f, _ := cache.CreateParamToRow(123, map1)
+	fmt.Printf("map1: %v\n", f)
+	time.Sleep(123 * time.Millisecond)
+
+	var map2 = make(map[string]interface{})
+	map2["a2"] = "a2"
+	map2["b2"] = 456
+	
+	f.AddParamToRow(map2)
+	fmt.Printf("map2: %v\n", f)
+	time.Sleep(123 * time.Millisecond)
+	f.DelParamToField("a1")
+	fmt.Printf("DelParamToField: %v\n", f)
+
+	
+	//2018-05-01 14:44:12
 
 	//cache.Run()
 	//running := true
