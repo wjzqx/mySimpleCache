@@ -4,7 +4,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 	//	"os"
 
 	"github.com/mySimpleCache/cache"
@@ -13,27 +12,50 @@ import (
 
 func main() {
 
-	//	m2 := make(map[int]int)s
-	//	m2[3] = 10
-	//	m2[2] = 11
-	//	m2[9] = 12
-	//	m2[1] = 13
-	//	m2[4] = 14
-	//	m2[8] = 15
-	//	m2[5] = 16
-	//	m2[7] = 17
-	//	m2[6] = 18
+	// test()
+	var map1 = make(map[string]interface{})
+	map1["a1"] = "a1"
+	map1["b1"] = 123
 
-	//	sortM := cache.SortMapKey(m2)
+	var map2 = make(map[string]interface{})
+	map2["a2"] = "a2"
+	map2["b2"] = 456
 
-	//	for _, v := range sortM {
-	//		fmt.Printf("k=%v, v=%v\n", v.Key, v.Value)
+	var map3 = make(map[string]interface{})
+	map3["a3"] = "a3"
+	map3["b3"] = 789
 
-	//	}
-	//	fmt.Printf("sortM: %v\n", sortM)
+	f1, _ := cache.CreateParamToRow(123, map1)
+	fmt.Printf("map1: %v\n", f1)
+	f1.AddParamToRow(map2)
+	fmt.Printf("map1: %v\n", f1)
+	f2, _ := cache.CreateParamToRow(123, map2)
+	fmt.Printf("map2: %v\n", f2)
 
+	f3, _ := cache.CreateParamToRow(123, map3)
+	fmt.Printf("map3: %v\n", f3)
+
+	var fArray = make([]cache.RowType, 0, 1)
+	fArray = append(fArray, f1)
+	//fArray = append(fArray, f2)
+
+	fos, _ := cache.CreateRowList("test", fArray)
+
+	fmt.Printf("CreateRowList is :%+v\n", fos)
+	var fArray1 = make([]cache.RowType, 0, 1)
+	fArray1 = append(fArray1, f2)
+	fmt.Printf("fArray1: %v\n", fArray1)
+	fos.AddParamRowList(fArray1)
+	fmt.Printf("AddParamRowList is :%+v\n", fos)
+	fmt.Printf("f3: %v\n", f3)
+	fos.UpdataParamRowList(f3, 0)
+	fmt.Printf("UpdataParamRowList is :%+v\n", fos)
+	fos.DelParamRow(1)
+	fmt.Printf("DelParamRow is :%+v\n", fos)
+}
+
+func test1() {
 	cache.CreateTable("testTable")
-	//test1()
 
 	var a = `{"a":15,"b":"aaa"},{"a":12}`
 	var b = `[{"c":"aaa"}`
@@ -52,149 +74,9 @@ func main() {
 
 	testF := util.MyFileObj{FileName: "./output1.txt", FileContent: jsonStr}
 	fmt.Printf("MyFileObj: %v\n", testF)
-	util.SaveFileOp(testF)
+	//util.SaveFileOp(testF)
 	var mun = util.RandInt64()
 	fmt.Printf("mun: %v\n", mun)
 	var timestamp = util.GetTimestamp("")
 	fmt.Printf("time: %v\n", timestamp)
-
-	var map1 = make(map[string]interface{})
-	map1["a1"] = "a1"
-	map1["b1"] = 123
-	f, _ := cache.CreateParamToRow(123, map1)
-	fmt.Printf("map1: %v\n", f)
-	time.Sleep(123 * time.Millisecond)
-
-	var map2 = make(map[string]interface{})
-	map2["a2"] = "a2"
-	map2["b2"] = 456
-	
-	f.AddParamToRow(map2)
-	fmt.Printf("map2: %v\n", f)
-	time.Sleep(123 * time.Millisecond)
-	f.DelParamToField("a1")
-	fmt.Printf("DelParamToField: %v\n", f)
-
-	
-	//2018-05-01 14:44:12
-
-	//cache.Run()
-	//running := true
-	//	fmt.Scanln(&opName, &queryParam, &targetFlag, &tableName, &termFlag, &termParam)
-	//	fmt.Printf("Hi %s %s %s %s %s %s!\n", opName, queryParam, targetFlag, tableName, termFlag, termParam)
-	//	fmt.Printf("opName %s\n", opName)
-	//	fmt.Printf("queryParam %v\n", queryParam)
-	//	fmt.Printf("targetFlag %s\n", targetFlag)
-	//	fmt.Printf("tableName %s\n", tableName)
-	//	fmt.Printf("termFlag %s\n", termFlag)
-	//	fmt.Printf("termParam %s\n", termParam)
-	//	log.Println("command", opName)
-	//	for running {
-	//		fmt.Printf("Hi %s %s %s %s %s %s!\n", opName, queryParam, targetFlag, tableName, termFlag, termParam)
-	//		if opName == "stop" {
-	//			running = false
-	//		}
-
-	//		log.Println("command", opName)
-	//	}
-
-	//fmt.Printf("GetSouceAll: %v\n", cache.FormatStrHeadOrTail(a, "[", "]"))
-	//fmt.Printf("GetSouceAll: %v\n", cache.FormatStrHeadOrTail(b, "[", "]"))
-
-}
-
-func test1() {
-	myCache := make(cache.FieldCache)
-	cache.AddSouce(myCache, "A", "a")
-	cache.AddSouce(myCache, "B", 1)
-	cache.AddSouce(myCache, "C", 23)
-	cache.AddSouce(myCache, "D", 12.1)
-	cache.AddSouce(myCache, "E", "e")
-	cache.AddSouce(myCache, "F", "f")
-
-	myRow := make(cache.RowCache, 0, 5)
-	myRow = cache.AddRow(myRow, myCache)
-
-	fmt.Printf("GetSouceAll: %v\n", myRow)
-	//i := cache.GetSouce()
-	//fmt.Printf("cache is: %v\n", cache)
-
-	c, e := cache.GetRowByIndex(myRow, 0)
-
-	if e != nil {
-		fmt.Printf("err: %v\n", e)
-	}
-
-	fmt.Printf("c: %v\n", c)
-
-	fmt.Printf("GetSouceAll: %v\n", myRow)
-
-	d, _ := json.Marshal(myRow)
-
-	jsonStr := string(d)
-	fmt.Printf("GetSouceAll to jsonStr: %v\n json:%v\n", jsonStr, d)
-
-	myCache1 := make(cache.FieldCache)
-	cache.AddSouce(myCache1, "A1", "a1")
-	cache.AddSouce(myCache1, "B1", "b1")
-	myRow = cache.AddRow(myRow, myCache1)
-
-	fmt.Printf("GetSouceAll: %v\n", myRow)
-
-	myCache2 := make(cache.FieldCache)
-	cache.AddSouce(myCache2, "A2", "a2")
-	cache.AddSouce(myCache2, "B2", "b2")
-
-	e1 := cache.UpdataRowByIndex(myRow, 1, myCache2)
-
-	if e1 != nil {
-		fmt.Printf("err: %v\n", e1)
-	}
-
-	fmt.Printf("UpdataRowByIndex: %v\n", myRow)
-
-	myRow, e2 := cache.DelRowByIndex(myRow, 0)
-	if e2 != nil {
-		fmt.Printf("err: %v\n", e2)
-	}
-
-	fmt.Printf("DelRowByIndex: %v\n", myRow)
-
-	fmt.Println("=====================================================================================================")
-
-	cacheInfoTemp := cache.CacheInfo{GroupName: "gN", CloseTime: 20, Persistence: "123"}
-	cacheInfoTemp.CreateCache()
-	fmt.Printf("GetSouceAll: %v\n", cacheInfoTemp)
-
-	type field map[string]string
-
-	aaaaaa := make(field)
-	aaaaaa["a"] = "aaa"
-	aaaaaa["b"] = "aaa"
-	bbbbbb := make(field)
-	bbbbbb["c"] = "aaa"
-	cccccc := make(field)
-	cccccc["d"] = "aaa"
-	cccccc["e"] = "aaa"
-	cccccc["f"] = "aaa"
-
-	eeeeee := make(field)
-	eeeeee["d"] = "aaa"
-	ffffff := make(field)
-	ffffff["d"] = "aaa"
-	gggggg := make(field)
-	gggggg["d"] = "aaa"
-
-	type row []field
-	var table = make(map[string]row)
-	slice2 := make(row, 0, 5)
-	slice2 = append(slice2, aaaaaa, bbbbbb, cccccc, eeeeee, ffffff, gggggg)
-
-	table["myTable"] = slice2
-	fmt.Printf("table: %v\n", table)
-	d1, _ := json.Marshal(table)
-
-	jsonStr1 := string(d1)
-
-	fmt.Printf("jsonStr: %v\n", jsonStr1)
 }

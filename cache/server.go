@@ -27,12 +27,12 @@ func CreateTable(talbleName string) (tc tableCache, err error) {
 	// 查找键值是否存在
 	if _, ok := table[talbleName]; ok {
 		return tc, ErrMapKeyExistence
-	} else {
-
-		table[talbleName] = nil
-		fmt.Printf("table: %v\n", table)
-		return table, err
 	}
+
+	table[talbleName] = nil
+	fmt.Printf("table: %v\n", table)
+	return table, err
+
 }
 
 /**

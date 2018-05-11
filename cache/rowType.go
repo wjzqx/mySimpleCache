@@ -1,9 +1,7 @@
-// fieldType
+// cache
 package cache
 
 import (
-	"fmt"
-
 	"github.com/mySimpleCache/util"
 )
 
@@ -13,7 +11,6 @@ import (
  * 格式如下： [b:aaa a:aaa]或{"a":"aaa","b":"aaa"}
  * 该方法集合主要处理数据的原子化操作：针对字段的增，删，改，查的操作
  */
- 
 type RowType struct {
 	/** 一条记录的唯一ID标识*/
 	FieldId int64
@@ -38,10 +35,10 @@ type RowType struct {
  * @return FieldType对象
  */
 func CreateParamToRow(uid int, mapTemp map[string]interface{}) (_fieldType RowType, _err error) {
-	var fieldId = util.RandInt64()
+	var fieldID = util.RandInt64()
 
 	fieldTemp := RowType{
-		FieldId:     fieldId,
+		FieldId:     fieldID,
 		CreateUid:   uid,
 		CreateTime:  util.GetTimestamp(""),
 		UpdateTime:  util.GetTimestamp(""),
@@ -94,8 +91,4 @@ func (f *RowType) DelParamToField(key string) (err error) {
 	} else {
 		return ErrMapKeyNotFind
 	}
-}
-
-func test() {
-	fmt.Println("test is true")
 }
