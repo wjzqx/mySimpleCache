@@ -24,6 +24,7 @@ func main() {
 	var map3 = make(map[string]interface{})
 	map3["a3"] = "a3"
 	map3["b3"] = 789
+	map3["ab.a"] = 98
 
 	f1, _ := cache.CreateParamToRow(123, map1)
 	fmt.Printf("map1: %v\n", f1)
@@ -34,6 +35,9 @@ func main() {
 
 	f3, _ := cache.CreateParamToRow(123, map3)
 	fmt.Printf("map3: %v\n", f3)
+
+	val, _ := f1.QueryParamByKey("a1")
+	fmt.Printf("QueryParamByKey: %v\n", val)
 
 	var fArray = make([]cache.RowType, 0, 1)
 	fArray = append(fArray, f1)
@@ -52,10 +56,23 @@ func main() {
 	fmt.Printf("UpdataParamRowList is :%+v\n", fos)
 	fos.DelParamRow(1)
 	fmt.Printf("DelParamRow is :%+v\n", fos)
+
+	table := cache.CreateTable(123, "test")
+	fmt.Printf("table: %+v\n", table)
+	table.AddTable("test1", fos)
+	fmt.Printf("table: %+v\n", table)
+
+	fos1, _ := cache.CreateRowList("test1", fArray1)
+	table.AddTable("test1", fos1)
+	fmt.Printf("table1: %+v\n", table)
+	table.UpdataTable("test1", fos)
+	fmt.Printf("table2: %+v\n", table)
+	table.DelTable("test1")
+	fmt.Printf("table3: %+v\n", table)
 }
 
 func test1() {
-	cache.CreateTable("testTable")
+	cache.CreateTable1("testTable")
 
 	var a = `{"a":15,"b":"aaa"},{"a":12}`
 	var b = `[{"c":"aaa"}`

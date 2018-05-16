@@ -2,6 +2,8 @@
 package cache
 
 import (
+	"encoding/json"
+
 	"github.com/mySimpleCache/util"
 )
 
@@ -13,15 +15,15 @@ import (
  */
 type RowType struct {
 	/** 一条记录的唯一ID标识*/
-	FieldId int64
+	FieldID int64
 	/**创建用户ID*/
-	CreateUid int
+	CreateUID int
 	/** 创建数据的时间*/
 	CreateTime int64
 	/** 修改数据的时间*/
 	UpdateTime int64
 	/**上一条记录的ID，首位数据为0，用于数据排序使用*/
-	PrevFieldId int64
+	PrevFieldID int64
 	/** 单条数据内容 map:key, val*/
 	ContentMap map[string]interface{}
 	/** 该条数据是否显示; true 显示， false 隐藏*/
@@ -38,11 +40,11 @@ func CreateParamToRow(uid int, mapTemp map[string]interface{}) (_fieldType RowTy
 	var fieldID = util.RandInt64()
 
 	fieldTemp := RowType{
-		FieldId:     fieldID,
-		CreateUid:   uid,
+		FieldID:     fieldID,
+		CreateUID:   uid,
 		CreateTime:  util.GetTimestamp(""),
 		UpdateTime:  util.GetTimestamp(""),
-		PrevFieldId: 0,
+		PrevFieldID: 0,
 		ContentMap:  mapTemp,
 	}
 	return fieldTemp, _err
@@ -91,4 +93,25 @@ func (f *RowType) DelParamToField(key string) (err error) {
 	} else {
 		return ErrMapKeyNotFind
 	}
+}
+
+/**
+ * 根据key查询对应的值
+ **/
+func (f *RowType) QueryParamByKey(key string) (_val string, err error) {
+
+	var fc = f.ContentMap
+	// 查找键值是否存在
+	if _, ok := fc[key]; ok {
+		_souce := fc[key]
+
+		b, err := json.Marshal(_souce)
+		if err != nil {
+			return key, err
+		}
+
+		return string(b), err
+
+	}
+	return key, ErrMapKeyNotFind
 }

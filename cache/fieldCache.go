@@ -61,9 +61,8 @@ func GetSouceByKey(fc FieldCache, key string) (s string, err error) {
 
 		return string(b), err
 
-	} else {
-		return key, ErrMapKeyNotFind
 	}
+	return key, ErrMapKeyNotFind
 
 }
 

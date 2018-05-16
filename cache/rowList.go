@@ -22,13 +22,16 @@ type RowList struct {
 
 /**
  * 创建数据集合
- * @param _rowsName row数据集合名称
- * @param _rows     row数据集合
- * @retrun _rowList rowList对象
- *         err      错误信息
+ * @param  _rowsName row数据集合名称
+ * @param  _rows     row数据集合
+ * @retrun _rowList  rowList对象
+ *         err       错误信息
  */
 func CreateRowList(_rowsName string, _rows []RowType) (_rowList RowList, err error) {
 
+	if _rows == nil {
+
+	}
 	rows := RowList{
 		RowsID:     util.RandInt64(),
 		Rows:       _rows,
@@ -88,4 +91,29 @@ func (r *RowList) DelParamRow(index int) (err error) {
 	r.Rows = rows
 	//log.Println("[RowList]:--->", r)
 	return err
+}
+
+/**
+ * 根据key匹配对应的数据
+ */
+func (r *RowList) QueryRowListByKey(key string) (rows []RowType, err error) {
+
+	return rows, err
+}
+
+/**
+ * 根据key和value组成条件，匹配对应的数据
+ */
+func (r *RowList) QueryRowListByCondition(key string, val string) (rows []RowType, err error) {
+	return rows, err
+}
+
+/**
+ * 根据Index获取数据
+ */
+func (r *RowList) QueryRowByIndex(index int) (row RowType, err error) {
+	if index > len(r.Rows) {
+		return row, ErrArrayIndexOutOfRange
+	}
+	return r.Rows[index], err
 }

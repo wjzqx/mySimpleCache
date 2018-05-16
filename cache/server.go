@@ -18,7 +18,7 @@ var table tableCache
  *  创建一张表空间
  *
  */
-func CreateTable(talbleName string) (tc tableCache, err error) {
+func CreateTable1(talbleName string) (tc tableCache, err error) {
 
 	if table == nil {
 		table = make(tableCache)
@@ -175,7 +175,7 @@ func consoleInput() {
 		s := strings.Split(command, " ")
 		switch s[0] {
 		case "caretTable":
-			CreateTable(s[1])
+			CreateTable1(s[1])
 			log.Println("CreateTable success", command)
 		case "insertRow":
 			tc, _ := AddParam(s[1], s[2])
