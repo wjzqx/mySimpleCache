@@ -94,21 +94,6 @@ func (r *RowList) DelParamRow(index int) (err error) {
 }
 
 /**
- * 根据key匹配对应的数据
- */
-func (r *RowList) QueryRowListByKey(key string) (rows []RowType, err error) {
-
-	return rows, err
-}
-
-/**
- * 根据key和value组成条件，匹配对应的数据
- */
-func (r *RowList) QueryRowListByCondition(key string, val string) (rows []RowType, err error) {
-	return rows, err
-}
-
-/**
  * 根据Index获取数据
  */
 func (r *RowList) QueryRowByIndex(index int) (row RowType, err error) {
